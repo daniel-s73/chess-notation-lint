@@ -65,9 +65,10 @@ const findings = lintPgn('1. e4 e5 2. Nf3 Nc6 3. 0-0 Nf6');
 | `move-number-format`         | warning  | `5..` instead of `5.` or `5...` |
 | `invalid-san`                | error    | anything else that isn't a recognizable SAN token |
 
-Comments (`{...}`), variations (`(...)`), NAGs (`$1`), tag pairs
-(`[Event "..."]`), and game result markers (`1-0`, `0-1`, `1/2-1/2`, `*`) are
-recognized and skipped rather than linted as moves.
+Comments (`{...}`), NAGs (`$1`), tag pairs (`[Event "..."]`), and game result
+markers (`1-0`, `0-1`, `1/2-1/2`, `*`) are recognized and skipped rather than
+linted as moves. Variations (`(...)`) are linted recursively, including
+nested ones, with their own move numbering.
 
 ## What this doesn't do
 

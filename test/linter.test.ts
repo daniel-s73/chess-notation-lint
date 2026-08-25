@@ -64,7 +64,22 @@ const cases: Case[] = [
     input: '1. e4 {a solid opening, 0-0 soon} e5',
     expectedRules: [],
   },
-  { name: 'a whole variation is ignored', input: '1. e4 (1. d4 d5) e5', expectedRules: [] },
+  { name: 'a clean variation is not flagged', input: '1. e4 (1. d4 d5) e5', expectedRules: [] },
+  {
+    name: 'a malformed move inside a variation is flagged',
+    input: '1. e4 (1. d4 0-0) e5',
+    expectedRules: ['castling-digit-zero'],
+  },
+  {
+    name: 'a variation opening on a black move numbers independently',
+    input: '1. e4 e5 2. Nf3 (2... Nc6 3. Bb5) Nc6',
+    expectedRules: [],
+  },
+  {
+    name: 'a nested variation is also linted',
+    input: '1. e4 (1. d4 (1. c4 c5) d5) e5',
+    expectedRules: [],
+  },
   {
     name: 'move-shaped text inside a tag pair is ignored',
     input: '[Event "Test"]\n[Site "0-0"]\n\n1. e4 e5',

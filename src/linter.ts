@@ -102,16 +102,17 @@ function scan(text: string): RawToken[] {
       continue;
     }
 
-    // Variations. We skip their contents entirely for now rather than
-    // recursively linting them with their own move numbering.
-    if (ch === '(') {
-      let depth = 1;
+    // Variations. Parentheses are treated as bare delimiters, like
+    // whitespace: the tokenizer already stops words at '(' and ')', so
+    // skipping just the parenthesis characters is enough to fall through
+    // into the variation's own moves and lint them the same way as the
+    // mainline. Move numbers inside a variation restart independently
+    // (e.g. "5... Nf6" opening a variation on black's move), but since
+    // move-number-format only checks that a single token is shaped like
+    // "N." or "N...", that restart doesn't need any special handling.
+    // Nesting falls out for free: an inner '(' is just another delimiter.
+    if (ch === '(' || ch === ')') {
       advance();
-      while (i < n && depth > 0) {
-        if (text[i] === '(') depth++;
-        else if (text[i] === ')') depth--;
-        advance();
-      }
       continue;
     }
 
