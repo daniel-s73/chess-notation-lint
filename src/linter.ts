@@ -24,6 +24,7 @@ const BLACK_MOVE_NUMBER_REGEX = /^\d+\.\.\.$/;
 
 const CASTLING_ZERO_REGEX = /^0-0(-0)?[+#]?$/;
 const CASTLING_REGEX = /^O-O(-O)?[+#]?$/;
+const CASTLING_LOWERCASE_REGEX = /^o-o(-o)?[+#]?$/;
 
 // Pawn and piece moves are kept as separate patterns rather than one merged
 // regex. A merged pattern that makes every group optional will happily
@@ -158,6 +159,18 @@ function checkMove(word: string, line: number, column: number): Finding[] {
 
   if (CASTLING_REGEX.test(word) || isValidSan(word)) {
     return [];
+  }
+
+  if (CASTLING_LOWERCASE_REGEX.test(word)) {
+    return [
+      {
+        line,
+        column,
+        severity: 'error',
+        rule: 'castling-letter-lowercase',
+        message: `castling move "${word}" uses a lowercase "o"; standard notation uses the capital letter O ("${word.toUpperCase()}")`,
+      },
+    ];
   }
 
   if (/^[kqrbn]/.test(word) && isValidSan(word[0].toUpperCase() + word.slice(1))) {

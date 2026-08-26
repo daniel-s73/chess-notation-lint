@@ -39,6 +39,16 @@ const cases: Case[] = [
   },
   { name: 'lowercase piece letter is flagged', input: '3. nf3', expectedRules: ['piece-letter-lowercase'] },
   {
+    name: 'castling with lowercase letter o is flagged',
+    input: '7. o-o o-o-o',
+    expectedRules: ['castling-letter-lowercase', 'castling-letter-lowercase'],
+  },
+  {
+    name: 'castling with lowercase letter o and check symbol is flagged',
+    input: '20. o-o+',
+    expectedRules: ['castling-letter-lowercase'],
+  },
+  {
     name: 'ambiguous lowercase-b pawn move is not flagged as a piece move',
     input: '1. b4',
     expectedRules: [],
