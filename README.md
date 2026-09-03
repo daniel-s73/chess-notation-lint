@@ -45,6 +45,21 @@ game.pgn:4:24 error [castling-digit-zero] castling move "0-0" uses the digit 0; 
 Each line is `file:line:column severity [rule] message`. Exit code is 1 if
 any error-severity finding was reported, 0 otherwise.
 
+Pass `--json` to get machine-readable output instead, for editor
+integrations:
+
+```
+node dist/src/cli.js --json game.pgn
+```
+
+```json
+[{"file":"game.pgn","line":4,"column":24,"severity":"error","rule":"castling-digit-zero","message":"castling move \"0-0\" uses the digit 0; standard notation uses the capital letter O (\"O-O\")"}]
+```
+
+Unlike the text output, `--json` always prints a JSON array -- `[]` for a
+clean file -- so a consumer parsing it never has to treat empty output as a
+third possible result alongside success and failure.
+
 ## Library usage
 
 ```ts
